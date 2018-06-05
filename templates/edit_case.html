@@ -46,7 +46,8 @@
                             <div class="input-group col-md-4 col-md-offset-1">
                                 <div class="input-group-addon" style="color: #0a628f">所属项目</div>
                                 <select name="project" class="form-control"
-                                        onchange="auto_load('#form_message', '/api/edit_case/', '#belong_module_id', 'module')">
+                                        onchange="auto_load('#form_message', '/api/edit_case/', '#belong_module_id', 'module')
+                                                  auto_load('#form_message', '/api/edit_case/', '#config', 'config')">
                                     <option value="{{ info.belong_project }}"
                                             selected>{{ info.belong_project }}</option>
                                     {% for obj in project %}
@@ -63,8 +64,7 @@
                             <div class="input-group col-md-4 col-md-offset-1">
                                 <div class="input-group-addon" style="color: #0a628f">所属模块</div>
                                 <select id="belong_module_id" name="module" class="form-control"
-                                        onchange="auto_load('#form_message', '/api/add_case/', '#belong_case_id', 'case'),
-                                        auto_load('#form_message', '/api/add_case/', '#config', 'config')">
+                                        onchange="auto_load('#form_message', '/api/add_case/', '#belong_case_id', 'case')">
                                     <option value="{{ info.belong_module.id }}">{{ info.belong_module.module_name }}</option>
                                 </select>
                             </div>
@@ -357,93 +357,6 @@
                         <button id="btn-json-viewer" class="btn btn-info">convert to json</button>
                         <form id="form_request_data">
                             {% if 'json' in request.request.keys %}
-                            <table class="table table-hover table-condensed table-bordered table-striped" id="data">
-                                <caption>request:</caption>
-                                <thead>
-                                <tr class="active text-success">
-                                    <th width="5%" align="center">Option</th>
-                                    <th width="30%" align="center">Key</th>
-                                    <th width="5%" align="center">Type</th>
-                                    <th width="60%" align="center">Value</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% if 'data' in request.request.keys %}
-                                    {% for key, value in request.request.data.items %}
-                                        <tr>
-                                            <td><input type="checkbox" name="data" style="width:55px">
-                                            </td>
-                                            <td><input type="text" name='test[][key]' value="{{ key }}"
-                                                       style="width:100%; border: none"></td>
-                                            <td><select name='test[][type]'
-                                                        class='form-control'
-                                                        style='height: 25px; font-size: 15px; padding-top: 0px; padding-left: 0px; border: none'>
-                                                {% if value|data_type == 'str' %}
-                                                    <option>string</option>
-                                                    <option>int</option>
-                                                    <option>float</option>
-                                                    <option>boolean</option>
-                                                {% elif value|data_type == 'int' %}
-                                                    <option>int</option>
-                                                    <option>string</option>
-                                                    <option>float</option>
-                                                    <option>boolean</option>
-                                                {% elif value|data_type == 'float' %}
-                                                    <option>float</option>
-                                                    <option>string</option>
-                                                    <option>int</option>
-                                                    <option>boolean</option>
-                                                {% elif value|data_type == 'bool' %}
-                                                    <option>boolean</option>
-                                                    <option>string</option>
-                                                    <option>int</option>
-                                                    <option>float</option>
-                                                {% endif %}
-                                            </select></td>
-                                            <td><input type="text" name='test[][value]' value="{{ value }}"
-                                                       style="width:100%; border: none"></td>
-                                        </tr>
-                                    {% endfor %}
-                                {% elif 'params' in request.request.keys %}
-                                    {% for key, value in request.request.params.items %}
-                                        <tr>
-                                            <td><input type="checkbox" name="data"
-                                                       style="width:55px">
-                                            </td>
-                                            <td><input type="text" name='test[][key]' value="{{ key }}"
-                                                       style="width:100%; border: none"></td>
-                                            <td><select name='test[][type]'
-                                                        class='form-control'
-                                                        style='height: 25px; font-size: 15px; padding-top: 0px; padding-left: 0px; border: none'>
-                                                {% if value|data_type == 'str' %}
-                                                    <option>string</option>
-                                                    <option>int</option>
-                                                    <option>float</option>
-                                                    <option>boolean</option>
-                                                {% elif value|data_type == 'int' %}
-                                                    <option>int</option>
-                                                    <option>string</option>
-                                                    <option>float</option>
-                                                    <option>boolean</option>
-                                                {% elif value|data_type == 'float' %}
-                                                    <option>float</option>
-                                                    <option>string</option>
-                                                    <option>int</option>
-                                                    <option>boolean</option>
-                                                {% elif value|data_type == 'bool' %}
-                                                    <option>boolean</option>
-                                                    <option>string</option>
-                                                    <option>int</option>
-                                                    <option>float</option>
-                                                {% endif %}
-                                            </select></td>
-                                            <td><input type="text" name='test[][value]' value="{{ value }}"
-                                                       style="width:100%; border: none"></td>
-                                        </tr>
-                                    {% endfor %}
-                                {% endif %}
-                                </tbody>
-                                </table>
                                 <span id="json-text" style="font-size:10px;">
                                 <div style="width:45%; float:left; margin-left: 0px; margin-top: 20px; height: 200px">
                                     <textarea class="form-control" id="json-input" style="width: 100%"
@@ -453,7 +366,7 @@
                                 <div style="width:50%; height:200px;overflow:auto;margin-top: 20px; margin-left: 5%; float:left">
                                     <p id="json-renderer" style="width: 100%; padding-left: 20px"></p>
                                 </div>
-                                </span>
+                            </span>
                             {% else %}
                                 <table class="table table-hover table-condensed table-bordered table-striped" id="data">
                                     <caption>request:</caption>
@@ -874,3 +787,4 @@
         });
     </script>
 {% endblock %}
+

@@ -2012,4 +2012,3 @@ django.template.exceptions.TemplateSyntaxError: Unused '3' at end of if expressi
 2018-06-01 13:33:34,888 [HttpRunnerManager:40] [views:login] [INFO]- yinquanwang 登录成功
 2018-06-01 13:34:09,536 [HttpRunnerManager:152] [operation:add_case_data] [INFO]- test_login_2用例更新成功: {'test': {'extract': [{'code': 'content.code'}, {'status': 'content.status'}], 'variables': [{'username': '${get_value(lcc)}'}, {'password': '${get_value(lcc)}'}], 'name': 'test_login_2', 'validate': [{'comparator': 'equals', 'expected': 'success', 'check': '$code'}, {'comparator': 'equals', 'expected': True, 'check': '$status'}], 'request': {'method': 'POST', 'data': {'password': '$password', 'username': '$username'}, 'url': 'http://127.0.0.1:8000/api/test_login_valid/'}}}
 2018-06-01 14:05:30,016 [HttpRunnerManager:40] [views:login] [INFO]- yinquanwang 登录成功
-2018-06-05 09:52:22,060 [HttpRunnerManager:41] [views:login] [INFO]- wangyinguang 登录成功
