@@ -257,13 +257,13 @@ def case_info_logic(type=True, **kwargs):
         if extract:
             test.setdefault('extract', key_value_list('extract', **extract))
 
-        #改成Method=Post,Type=json时,支持传params和json
+        #改成Method=Post,Type=json时,支持同时传params和json
         # request_data = test.get('request').pop('request_data')
         request_data_json = test.get('request').pop('request_data_json')
         request_data_params = test.get('request').pop('request_data_params')
         data_type = test.get('request').pop('type')
 
-        #改成Method = Post, Type = json时, 支持传params和json
+        #改成Method = Post, Type = json时, 支持同时传params和json
         # if request_data and data_type:
             # if data_type == 'json':
             #     test.get('request').setdefault(data_type, request_data)
@@ -274,10 +274,11 @@ def case_info_logic(type=True, **kwargs):
             #     test.get('request').setdefault(data_type, data_dict)
         if request_data_json or request_data_params and data_type:
             if data_type == 'json':
-                data_dict = key_value_dict('data', **request_data_params)
-                if not isinstance(data_dict, dict):
-                    return data_dict
-                test.get('request').setdefault("params", data_dict)
+                if  request_data_params is None:
+                    data_dict = key_value_dict('data', **request_data_params)
+                    if not isinstance(data_dict, dict):
+                        return data_dict
+                    test.get('request').setdefault("params", data_dict)
                 test.get('request').setdefault(data_type, request_data_json)
             else:
                 data_dict = key_value_dict('data', **request_data_params)
