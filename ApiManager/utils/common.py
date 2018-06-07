@@ -1,3 +1,4 @@
+import datetime
 import io
 import json
 import logging
@@ -5,9 +6,10 @@ import os
 from json import JSONDecodeError
 
 import yaml
+from django.db.models import Sum
 from djcelery.models import PeriodicTask
 
-from ApiManager.models import ModuleInfo, TestCaseInfo
+from ApiManager.models import ModuleInfo, TestCaseInfo, TestReports
 from ApiManager.utils.operation import add_project_data, add_module_data, add_case_data, add_config_data, \
     add_register_data
 from ApiManager.utils.task_opt import create_task
@@ -133,7 +135,7 @@ def load_modules(**kwargs):
     :return: str: module_info
     """
     belong_project = kwargs.get('name').get('project')
-    module_info = ModuleInfo.objects.filter(belong_project__project_name=belong_project)\
+    module_info = ModuleInfo.objects.filter(belong_project__project_name=belong_project) \
         .values_list('id', 'module_name').order_by('-create_time')
     module_info = list(module_info)
     string = ''
@@ -142,7 +144,7 @@ def load_modules(**kwargs):
     return string[:len(string) - 11]
 
 
-def load_cases(type = 1, **kwargs):
+def load_cases(type=1, **kwargs):
     """
     加载指定项目模块下的用例
     :param kwargs: dict: 项目与模块信息
@@ -153,8 +155,8 @@ def load_cases(type = 1, **kwargs):
     if type == 1:
         if module == '请选择':
             return ''
-        case_info = TestCaseInfo.objects.filter(belong_project=belong_project,belong_module=module, type=type).\
-        values_list('id', 'name').order_by('-create_time')
+        case_info = TestCaseInfo.objects.filter(belong_project=belong_project, belong_module=module, type=type). \
+            values_list('id', 'name').order_by('-create_time')
     elif type == 2:
         case_info = TestCaseInfo.objects.filter(belong_project=belong_project, type=type). \
             values_list('id', 'name').order_by('-create_time')
@@ -255,13 +257,30 @@ def case_info_logic(type=True, **kwargs):
         if extract:
             test.setdefault('extract', key_value_list('extract', **extract))
 
-        request_data = test.get('request').pop('request_data')
+        #改成Method=Post,Type=json时,支持传params和json
+        # request_data = test.get('request').pop('request_data')
+        request_data_json = test.get('request').pop('request_data_json')
+        request_data_params = test.get('request').pop('request_data_params')
         data_type = test.get('request').pop('type')
-        if request_data and data_type:
+
+        #改成Method = Post, Type = json时, 支持传params和json
+        # if request_data and data_type:
+            # if data_type == 'json':
+            #     test.get('request').setdefault(data_type, request_data)
+            # else:
+            #     data_dict = key_value_dict('data', **request_data)
+            #     if not isinstance(data_dict, dict):
+            #         return data_dict
+            #     test.get('request').setdefault(data_type, data_dict)
+        if request_data_json or request_data_params and data_type:
             if data_type == 'json':
-                test.get('request').setdefault(data_type, request_data)
+                data_dict = key_value_dict('data', **request_data_params)
+                if not isinstance(data_dict, dict):
+                    return data_dict
+                test.get('request').setdefault("params", data_dict)
+                test.get('request').setdefault(data_type, request_data_json)
             else:
-                data_dict = key_value_dict('data', **request_data)
+                data_dict = key_value_dict('data', **request_data_params)
                 if not isinstance(data_dict, dict):
                     return data_dict
                 test.get('request').setdefault(data_type, data_dict)
@@ -539,3 +558,33 @@ def upload_file_logic(files, project, module, account):
                     test_case.get('test')['validate'] = new_validate
 
                 add_case_data(type=True, **test_case)
+
+
+def get_total_values():
+    total = {
+        'pass': [],
+        'fail': [],
+        'percent': []
+    }
+    today = datetime.date.today()
+    for i in range(-11, 1):
+        begin = today + datetime.timedelta(days=i)
+        end = begin + datetime.timedelta(days=1)
+
+        total_run = TestReports.objects.filter(create_time__range=(begin, end)).aggregate(testRun=Sum('testsRun'))[
+            'testRun']
+        total_success = TestReports.objects.filter(create_time__range=(begin, end)).aggregate(success=Sum('successes'))[
+            'success']
+
+        if not total_run:
+            total_run = 0
+        if not total_success:
+            total_success = 0
+
+        total_percent = round(total_success / total_run * 100, 2) if total_run != 0 else 0.00
+        total['pass'].append(total_success)
+        total['fail'].append(total_run - total_success)
+        total['percent'].append(total_percent)
+
+    return total
+

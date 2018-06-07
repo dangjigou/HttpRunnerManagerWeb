@@ -183,16 +183,28 @@ function case_ajax(type) {
     var caseInfo = $("#form_message").serializeJSON();
     var variables = $("#form_variables").serializeJSON();
     var request_data = null;
+    // if (dataType.DataType === 'json') {
+    //     try {
+    //         request_data = eval('(' + $('#json-input').val() + ')');
+    //     }
+    //     catch (err) {
+    //         myAlert('Json格式输入有误！')
+    //         return
+    //     }
+    // } else {
+    //     request_data = $("#form_request_data").serializeJSON();
+    // }
     if (dataType.DataType === 'json') {
         try {
-            request_data = eval('(' + $('#json-input').val() + ')');
+            request_data_json = eval('(' + $('#json-input').val() + ')');
+            request_data_params = $("#form_request_data").serializeJSON();
         }
         catch (err) {
             myAlert('Json格式输入有误！')
             return
         }
     } else {
-        request_data = $("#form_request_data").serializeJSON();
+        request_data_params = $("#form_request_data").serializeJSON();
     }
     var headers = $("#form_request_headers").serializeJSON();
     var extract = $("#form_extract").serializeJSON();
@@ -215,7 +227,8 @@ function case_ajax(type) {
                 "method": method.method,
                 "headers": headers,
                 "type": dataType.DataType,
-                "request_data": request_data
+                "request_data_params": request_data_params,
+                "request_data_json":request_data_json
             },
             "extract": extract,
             "validate": validate,

@@ -284,10 +284,10 @@
 
         $('#DataType').on('change', function () {
             if ($('#DataType').val() == 'json') {
-                $('#add_data').attr('disabled', true);
-                $('#del_data').attr('disabled', true);
-                $('#btn-json-viewer').removeAttr("disabled");
-                $('#data').remove();
+                {#$('#add_data').attr('disabled', true);#}
+                {#$('#del_data').attr('disabled', true);#}
+                {#$('#btn-json-viewer').removeAttr("disabled");#}
+                {#$('#data').remove();#}
                 var json_text = "<span style=\"font-size:10px;\" id=\"json-text\"><body>\n" +
                     "                                <div style=\"width:45%; float:left; margin-left: 0px; margin-top: 20px; height: 200px\" >\n" +
                     "                                    <textarea class=\"form-control\" id=\"json-input\" rows=\"10\" style=\"width: 100%\">{\"key\":\"value\"}\n" +
