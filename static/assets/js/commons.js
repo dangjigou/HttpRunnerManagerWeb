@@ -182,7 +182,8 @@ function case_ajax(type) {
     var dataType = $("#DataType").serializeJSON();
     var caseInfo = $("#form_message").serializeJSON();
     var variables = $("#form_variables").serializeJSON();
-    var request_data = null;
+    var request_data_params = null;
+    var request_data_json = null;
     // if (dataType.DataType === 'json') {
     //     try {
     //         request_data = eval('(' + $('#json-input').val() + ')');
