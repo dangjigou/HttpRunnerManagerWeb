@@ -263,7 +263,7 @@ def case_info_logic(type=True, **kwargs):
         request_data_params = test.get('request').pop('request_data_params')
         data_type = test.get('request').pop('type')
 
-        #改成Method = Post, Type = json时, 支持同时传params和json
+        #改成Method = Post,Type = json时,支持同时传params和json
         # if request_data and data_type:
             # if data_type == 'json':
             #     test.get('request').setdefault(data_type, request_data)
