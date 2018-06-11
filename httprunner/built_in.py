@@ -147,3 +147,35 @@ def sleep_N_secs(n_secs):
     """ sleep n seconds
     """
     time.sleep(n_secs)
+
+def getDetailListDic(detailListDic):
+    dict = {}
+    dict['fieldName'] = detailListDic.get('field_name')
+    dict['isRequired'] = detailListDic.get('is_required')
+    dict['fieldType'] = detailListDic.get('field_type')
+    dict['styleType'] = detailListDic.get('style_type')
+    dict['fieldContent'] = detailListDic.get('fieldContent')
+    type = dict.get('styleType')
+    if type == 1:
+        dict['promptMessage'] = detailListDic.get('prompt_message')
+    if type == 2:
+        dict['fieldContent'] = "[\"脚本回归测试\"]"
+        dict['colorType'] = detailListDic.get('color_type')
+        dict['promptMessage'] = detailListDic.get('prompt_message')
+    if type == 3:
+        dict['fieldContent'] = "[[\"脚本回归测试~\",\"脚本回归测试~！\"],[\"脚本回归测试~~！！\",\"脚本回归测试~~~\"]]"
+        dict['colorType'] = detailListDic.get('color_type')
+        dict['promptMessage'] = detailListDic.get('prompt_message')
+    if type == 4:
+        dict['fieldContent'] = "2,3,1,3,2"
+        dict['promptMessage'] = detailListDic.get('prompt_message')
+    return dict
+
+# 编辑日志时获取模板详情list
+def getDetailList(detailList,fieldContent):
+    list = []
+    for dict in detailList:
+        dict['fieldContent'] = fieldContent
+        list.append(getDetailListDic(dict))
+    return list
+

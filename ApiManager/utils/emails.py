@@ -13,6 +13,8 @@ def send_email_reports(receiver, html_report_path):
         smtp_server = 'smtp.sina.com'
     elif '@163.com' in EMAIL_SEND_USERNAME:
         smtp_server = 'smtp.163.com'
+    elif '@alog.com' in EMAIL_SEND_USERNAME:
+        smtp_server = 'smtp.alog.com'
     else:
         smtp_server = 'smtp.exmail.qq.com'
 
