@@ -23,7 +23,7 @@ def send_email_reports(receiver, html_report_path):
     with io.open(html_report_path, 'r', encoding='utf-8') as stream:
         send_file = stream.read()
 
-    att = MIMEText(send_file, "base64", "utf-8")
+    att = MIMEText(send_file, "base64", "gb2312")
     att["Content-Type"] = "application/octet-stream"
     att["Content-Disposition"] = "attachment;filename = TestReports.html"
 
@@ -45,4 +45,4 @@ def send_email_reports(receiver, html_report_path):
 
 
 if __name__ == '__main__':
-    send_email_reports('##@qq.com, example@163.com', 'D:\\HttpRunnerManager\\reports\\2018-06-05 15-58-00.html')
+    send_email_reports('yinguangwang@alog.com, yinguangwang@alog.com', 'C:\\Users\\10067610\\Documents\\HttpRunnerManager\\templates\\debugtalk.html')

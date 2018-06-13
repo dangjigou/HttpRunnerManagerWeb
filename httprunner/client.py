@@ -114,10 +114,15 @@ class HttpSession(requests.Session):
         self.meta_data["status_code"] = response.status_code
         self.meta_data["response_headers"] = response.headers
 
-        try:
-            self.meta_data["response_body"] = response.json()
-        except ValueError:
-            self.meta_data["response_body"] = response.content
+        # 编码问题修改
+        if response.request.body == None:
+            self.meta_data["request_body"] = response.request.body
+        else:
+            self.meta_data["request_body"] = str(response.request.body, encoding="utf8").encode('utf-8').decode('unicode_escape')
+        # try:
+        #     self.meta_data["response_body"] = response.json()
+        # except ValueError:
+        #     self.meta_data["response_body"] = response.content
 
         msg = "response details:\n"
         msg += "> status_code: {}\n".format(self.meta_data["status_code"])
