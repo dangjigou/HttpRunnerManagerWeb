@@ -27,7 +27,7 @@ def send_email_reports(receiver, html_report_path):
     att["Content-Type"] = "application/octet-stream"
     att["Content-Disposition"] = "attachment;filename = TestReports.html"
 
-    body = MIMEText("附件为定时任务生成的接口测试报告，请查收，谢谢！", _subtype='html', _charset='gb2312')
+    body = MIMEText("附件为定时任务生成的接口测试报告，请查收，谢谢！", _subtype='html', _charset='gbk')
 
     msg = MIMEMultipart('related')
     msg['Subject'] = subject
@@ -45,4 +45,4 @@ def send_email_reports(receiver, html_report_path):
 
 
 if __name__ == '__main__':
-    send_email_reports('yinguangwang@alog.com, yinguangwang@alog.com', 'C:\\Users\\10067610\\Documents\\HttpRunnerManager\\templates\\debugtalk.html')
+    send_email_reports('yinguangwang@alog.com', 'C:\\Users\\10067610\\Documents\\HttpRunnerManager\\templates\\debugtalk.html')
