@@ -259,8 +259,8 @@ def case_info_logic(type=True, **kwargs):
 
         #改成Method=Post,Type=json时,支持同时传params和json
         # request_data = test.get('request').pop('request_data')
-        request_data_json = test.get('request').pop('request_data_json')
         request_data_params = test.get('request').pop('request_data_params')
+        request_data_json = test.get('request').pop('request_data_json')
         data_type = test.get('request').pop('type')
 
         #改成Method=Post,Type=json时,支持同时传params和json

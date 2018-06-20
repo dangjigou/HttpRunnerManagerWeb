@@ -176,7 +176,7 @@ function copy_data_ajax(id, url) {
     });
 }
 
-function case_ajax(type) {
+function case_ajax(type, editor) {
     var url = $("#url").serializeJSON();
     var method = $("#method").serializeJSON();
     var dataType = $("#DataType").serializeJSON();
@@ -197,7 +197,8 @@ function case_ajax(type) {
     // }
     if (dataType.DataType === 'json') {
         try {
-            request_data_json = eval('(' + $('#json-input').val() + ')');
+            // request_data_json = eval('(' + $('#json-input').val() + ')');
+            request_data_json  = eval('(' + editor.session.getValue() + ')');
             request_data_params = $("#form_request_data").serializeJSON();
         }
         catch (err) {
@@ -272,10 +273,10 @@ function config_ajax(type) {
     var request_data = null;
     if (dataType.DataType === 'json') {
         try {
-            request_data = eval('(' + $('#json-input').val() + ')');
+            request_data = eval('(' + editor.session.getValue() + ')');
         }
         catch (err) {
-            myAlert('Json格式输入有误！')
+            myAlert('Json格式输入有误！');
             return
         }
     } else {
@@ -416,5 +417,25 @@ function add_params(id) {
 }
 
 
+function init_acs(language, theme, editor) {
+    editor.setTheme("ace/theme/" + theme);
+    editor.session.setMode("ace/mode/" + language);
+
+    editor.setFontSize(17);
+
+    editor.setReadOnly(false);
+
+    editor.setOption("wrap", "free");
+
+    ace.require("ace/ext/language_tools");
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true,
+        autoScrollEditorIntoView: true
+    });
+
+
+}
 
 

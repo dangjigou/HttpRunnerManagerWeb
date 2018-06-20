@@ -74,10 +74,10 @@ class TestCaseInfo(BaseTable):
         db_table = 'TestCaseInfo'
 
     type = models.IntegerField('test/config', default=1)
-    name = models.CharField('用例/配置名称', max_length=50)
+    name = models.CharField('用例/配置名称', max_length=200)
     belong_project = models.CharField('所属项目', max_length=50)
     belong_module = models.ForeignKey(ModuleInfo, on_delete=models.CASCADE)
-    include = models.CharField('包含config/test', max_length=400, null=True)
+    include = models.CharField('包含config/test', max_length=500, null=True)
     author = models.CharField('编写人员', max_length=20)
     request = models.TextField('请求信息')
     objects = TestCaseInfoManager()
@@ -105,3 +105,21 @@ class EnvInfo(BaseTable):
     base_url = models.CharField(max_length=40)
     simple_desc = models.CharField(max_length=50)
     objects = EnvInfoManager()
+
+
+class DebugTalk(BaseTable):
+    class Meta:
+        verbose_name = '驱动py文件'
+        db_table = 'DebugTalk'
+    belong_project = models.ForeignKey(ProjectInfo, on_delete=models.CASCADE)
+    debugtalk = models.TextField()
+
+
+class TestSuite(BaseTable):
+    class Meta:
+        verbose_name = '用例集合'
+        db_table = 'TestSuite'
+
+    belong_project = models.ForeignKey(ProjectInfo, on_delete=models.CASCADE)
+    suite_name = models.CharField(max_length=100)
+    include = models.TextField()

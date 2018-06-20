@@ -54,6 +54,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+MIDDLEWARE_CLASSES = [
+    'dwebsocket.middleware.WebSocketMiddleware'
+]
+
 ROOT_URLCONF = 'HttpRunnerManager.urls'
 
 TEMPLATES = [
@@ -143,7 +147,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder'
 )
 
-SESSION_COOKIE_AGE = 30 * 60
+SESSION_COOKIE_AGE = 300 * 60
 
 djcelery.setup_loader()
 CELERY_ENABLE_UTC = True
